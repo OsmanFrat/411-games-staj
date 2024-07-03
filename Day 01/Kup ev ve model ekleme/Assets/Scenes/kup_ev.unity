@@ -723,6 +723,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.x
       value: 3.8809888
       objectReference: {fileID: 0}
+    - target: {fileID: 1279025433411930385, guid: 18907fa17627e8d4f8ef3007ad5ad6d4,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 95b8e70363612204ea0ff0d748d73547, type: 2}
     - target: {fileID: 1787915549234080674, guid: 18907fa17627e8d4f8ef3007ad5ad6d4,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -793,6 +798,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: CubeHouse
       objectReference: {fileID: 0}
+    - target: {fileID: 5174346289883952295, guid: 18907fa17627e8d4f8ef3007ad5ad6d4,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 18daa5ab2f5b2a64fb0c62ada31669be, type: 2}
     - target: {fileID: 5779050558028342268, guid: 18907fa17627e8d4f8ef3007ad5ad6d4,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -813,6 +823,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.x
       value: 9.373832
       objectReference: {fileID: 0}
+    - target: {fileID: 7163942865477277237, guid: 18907fa17627e8d4f8ef3007ad5ad6d4,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 18daa5ab2f5b2a64fb0c62ada31669be, type: 2}
     - target: {fileID: 7419920105710221072, guid: 18907fa17627e8d4f8ef3007ad5ad6d4,
         type: 3}
       propertyPath: m_LocalScale.x
