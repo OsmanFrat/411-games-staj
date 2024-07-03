@@ -8,9 +8,9 @@ public class PlayerCollision : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.tag == obstacleTag)
-        {
-            Debug.Log("We hit an obstacle!");
+        { 
             playerMovement.enabled = false;
+            FindAnyObjectByType<GameManager>().EndGame();
         }
     }
 }

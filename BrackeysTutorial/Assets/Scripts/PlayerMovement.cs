@@ -12,7 +12,8 @@ public class PlayerMovement : MonoBehaviour
 
 
     private void Update()
-    {
+    { 
+        
         if (Input.GetKey(KeyCode.D))
         {
             dButtonPressed = true;
@@ -21,6 +22,7 @@ public class PlayerMovement : MonoBehaviour
         {
             aButtonPressed = true;
         }
+        
     }
 
     // Using FixedUpdate because we are doing physic stuff.
@@ -31,13 +33,25 @@ public class PlayerMovement : MonoBehaviour
 
         if (dButtonPressed)
         {
+            /*
+            Vector3 currentPosition = transform.position;
+            currentPosition.z += -0.2f;
+            transform.position = currentPosition;
+            */
             rb.AddForce(0, 0, -sidewaysForce * Time.deltaTime, ForceMode.VelocityChange);
             dButtonPressed = false;
         }
+        
         if (aButtonPressed)
         {
             rb.AddForce(0, 0, sidewaysForce * Time.deltaTime, ForceMode.VelocityChange);
             aButtonPressed = false;
         }
+
+        if(rb.position.y < -1f)
+        {
+            FindObjectOfType<GameManager>().EndGame();
+        }
+
     }
 }
