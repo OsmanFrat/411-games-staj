@@ -8,10 +8,14 @@ public class NewInput : MonoBehaviour
     public float forwardForce = 2000f;
     public float sidewaysForce = 2000f;
     public float rotationSpeed = 2000f;
-    public float yatayharekethızı = 10f; // Increased this for noticeable movement
-    public float sağduvarpozisyon;
-    public float ivme;
-    public float ivmeArtışHızı; // Increased this for noticeable acceleration
+    public float yatayharekethızı = 10f; 
+    public float solDuvarPozisyon;
+    public float sagDuvarPozisyon;
+
+    [Range(0,2)]
+    public float max_accel;
+    [SerializeField] private float current_accel;
+    public float max_accel_reach_time;
 
     void Start()
     {
@@ -31,21 +35,21 @@ public class NewInput : MonoBehaviour
 
         if (Input.GetKey("d"))
         {
-            ivme += ivmeArtışHızı * Time.deltaTime; // Increase acceleration
-            mevcut_pozisyon.z -= Mathf.Min(ivme, yatayharekethızı) * Time.deltaTime;
+            current_accel += max_accel * Time.deltaTime / max_accel_reach_time; 
+            mevcut_pozisyon.z -= Mathf.Min(current_accel, yatayharekethızı) * Time.deltaTime;
         }
         else if (Input.GetKey("a"))
         {
-            ivme += ivmeArtışHızı * Time.deltaTime; // Increase acceleration
-            mevcut_pozisyon.z += Mathf.Min(ivme, yatayharekethızı) * Time.deltaTime;
+            current_accel += max_accel * Time.deltaTime / max_accel_reach_time; 
+            mevcut_pozisyon.z += Mathf.Min(current_accel, yatayharekethızı) * Time.deltaTime;
         }
         else
         {
-            ivme = 0; // Reset acceleration if no keys are pressed
+            current_accel = 0;
         }
 
         // Clamp the position
-        mevcut_pozisyon.z = Mathf.Clamp(mevcut_pozisyon.z, -71.3f, sağduvarpozisyon - transform.localScale.x / 2);
+        mevcut_pozisyon.z = Mathf.Clamp(mevcut_pozisyon.z, sagDuvarPozisyon, solDuvarPozisyon - transform.localScale.z / 2);
         transform.position = mevcut_pozisyon;
     }
 }
