@@ -8,15 +8,16 @@ public class Player : MonoBehaviour
     [Space]
     [SerializeField] private TouchSlider touchSlider;
 
-    [SerializeField] private Cube mainCube;
+    private Cube mainCube;
 
     private bool isPointerDown;
+    private bool canMove;
     private Vector3 cubePos;
 
     private void Start()
     {
-        // TODO: Spawn new cube
-
+        SpawnCube();
+        canMove = true;
         // Listen to slider events
         touchSlider.OnPointerDownEvent += OnPointerDown;
         touchSlider.OnPointerDragEvent += OnPointerDrag;
@@ -48,17 +49,33 @@ public class Player : MonoBehaviour
 
     private void OnPointerUp()
     {
-        if (isPointerDown)
+        if (isPointerDown && canMove)
         {
             isPointerDown = false;
+            canMove = false;
 
             // Push the cube
             mainCube.cubeRigidbody.AddForce(Vector3.forward * pushForce, ForceMode.Impulse);
 
-            // Spawn a new cube after 0.3 second
+            Invoke("SpawnNewCube", 0.3f);
         }
     }
 
+    private void SpawnNewCube()
+    {
+        mainCube.isMainCube = false;
+        canMove = true;
+        SpawnCube();
+    }
+
+    private void SpawnCube()
+    {
+        mainCube = CubeSpawn.Instance.SpawnRandom();
+        mainCube.isMainCube = true;
+
+        //reset cubePos variable
+        cubePos = mainCube.transform.position;
+    }
     private void OnDestroy()
     {
         // remove listeners

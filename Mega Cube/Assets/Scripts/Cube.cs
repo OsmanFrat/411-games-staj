@@ -3,8 +3,11 @@ using TMPro;
 
 public class Cube : MonoBehaviour
 {
+    static int staticID = 0;
+
     [SerializeField] private TMP_Text[] numbersText;
 
+    [HideInInspector] public int CubeID;
     [HideInInspector] public Color cubeColor;
     [HideInInspector] public int cubeNumber;
     [HideInInspector] public Rigidbody cubeRigidbody;
@@ -14,6 +17,7 @@ public class Cube : MonoBehaviour
 
     private void Awake()
     {
+        CubeID = staticID++;
         cubeMeshRendere = GetComponent<MeshRenderer>();
         cubeRigidbody = GetComponent<Rigidbody>();
     }
