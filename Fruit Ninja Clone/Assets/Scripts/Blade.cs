@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Blade : MonoBehaviour
 {
+
     public GameObject bladeTrail;
     public float minCuttingVelocity = .001f;
 
@@ -18,6 +19,7 @@ public class Blade : MonoBehaviour
     {
         rb = this.GetComponent<Rigidbody2D>();
         bladeCollider = GetComponent<CircleCollider2D>();
+        
 
         cam = Camera.main;
     }
@@ -75,4 +77,5 @@ public class Blade : MonoBehaviour
         bladeCollider.enabled = false;
         Destroy(currentBladeTrail, 2f);
     }
+
 }
