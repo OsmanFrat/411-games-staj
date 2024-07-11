@@ -5,9 +5,9 @@ public class FruitSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject fruitPrefab;
     [SerializeField] private GameObject bombPrefab;
-
+    [SerializeField] private GameManager gameManager;
+    
     public Transform[] spawnPoints;
-    public  bool gameOver = false;
 
     [SerializeField] private float minFruitSpawnDelay = .1f;
     [SerializeField] private float maxFruitSpawnDelay = 1f;
@@ -16,13 +16,15 @@ public class FruitSpawner : MonoBehaviour
     public float maxBombSpawnDelay = 100f;
     private void Start()
     {
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
         StartCoroutine(SpawnFruits());
         StartCoroutine(SpawnBomb());
     }
 
     IEnumerator SpawnFruits()
     {
-        while (!gameOver)
+        while (!gameManager.gameOver)
         {
             float delay = Random.Range(minFruitSpawnDelay, maxFruitSpawnDelay);
             yield return new WaitForSeconds(delay);
@@ -38,7 +40,7 @@ public class FruitSpawner : MonoBehaviour
 
     IEnumerator SpawnBomb()
     {
-        while (!gameOver)
+        while (!gameManager.gameOver)
         {
             float delay = Random.Range(minBombSpawnDelay, maxBombSpawnDelay);
             yield return new WaitForSeconds(delay);

@@ -5,11 +5,12 @@ public class Blade : MonoBehaviour
 
     public GameObject bladeTrail;
     public float minCuttingVelocity = .001f;
-
+    
     [SerializeField] private bool isCutting = false;
 
     [SerializeField] private Vector2 previousPosition;
 
+    [SerializeField] private GameManager gameManager;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private CircleCollider2D bladeCollider;
     [SerializeField] private Camera cam;
@@ -17,6 +18,9 @@ public class Blade : MonoBehaviour
     [SerializeField] private GameObject currentBladeTrail;
     private void Start()
     {
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        gameManager.gameOver = false;
+
         rb = this.GetComponent<Rigidbody2D>();
         bladeCollider = GetComponent<CircleCollider2D>();
         
@@ -25,11 +29,16 @@ public class Blade : MonoBehaviour
     }
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (gameManager.gameOver)
+        {
+            return;
+        }
+
+        if (Input.GetMouseButtonDown(0) && !gameManager.gameOver)
         {
             StartCutting();
         }
-        else if (Input.GetMouseButtonUp(0))
+        else if (Input.GetMouseButtonUp(0) && !gameManager.gameOver)
         {
             StopCutting();
         }
