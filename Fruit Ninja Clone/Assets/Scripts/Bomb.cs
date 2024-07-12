@@ -6,6 +6,7 @@ public class Bomb : MonoBehaviour
     public ParticleSystem bombEffect;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private float startForce = 12f;
+    public AudioSource explosionSound;
 
     private void Start()
     {
@@ -19,8 +20,9 @@ public class Bomb : MonoBehaviour
         if (collision.gameObject.CompareTag("Blade"))
         {
             bombEffect.Play();
-            
-            Destroy(gameObject, .3f);
+            explosionSound.Play();
+
+            Destroy(gameObject, .35f);
             gameManager.GameOver();
         }
     }

@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 183102169990263354}
   - component: {fileID: 3242974457819687478}
   - component: {fileID: 634544244579415841}
-  - component: {fileID: 4875892437340107855}
+  - component: {fileID: 3522083504934210992}
   m_Layer: 0
-  m_Name: Watermelon
-  m_TagString: Watermelon
+  m_Name: GoldenWaterMelon
+  m_TagString: GoldenWatermelon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -97,7 +97,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &4875892437340107855
+--- !u!114 &3522083504934210992
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -106,13 +106,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1973755450649329728}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 938db60a7fb06ea4d913ec2a8775b930, type: 3}
+  m_Script: {fileID: 11500000, guid: 11bdb78a440a18040ba4ba322d44ee33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 0}
-  watermelonScore: 100
-  fruitSlicedPrefab: {fileID: 2003336449297393122, guid: 15e4f383540280f408c86176e1daa9cc, type: 3}
-  rb: {fileID: 0}
+  goldenWatermelon: 500
+  GoldenSlicedWatermelonPrefab: {fileID: 2003336449297393122, guid: f4f20d986e7f3c34ebab294badd9eedb, type: 3}
+  rb: {fileID: 3242974457819687478}
   startForce: 13
 --- !u!1001 &211183277590534482
 PrefabInstance:
@@ -166,6 +166,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: c92b4b92729f12a4586682b64940e16e, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 8a2d3f048ee8c4d4d810ddde6979367e, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

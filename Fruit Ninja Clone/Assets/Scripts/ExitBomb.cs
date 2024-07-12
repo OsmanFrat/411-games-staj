@@ -11,7 +11,7 @@ public class ExitBomb : MonoBehaviour
         { 
             gameExit = true;
             bombEffect.Play();
-            Destroy(gameObject, .2f);
+            Destroy(gameObject, .17f);
         }
     }
 }

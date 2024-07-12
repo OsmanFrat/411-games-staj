@@ -1392,7 +1392,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bladeTrail: {fileID: 1609980983167136643, guid: b5fa4e7efd399924fa60ab60cd9ad6c5, type: 3}
-  minCuttingVelocity: 0.001
+  minCuttingVelocity: 1
   isCutting: 0
   previousPosition: {x: 0, y: 0}
   rb: {fileID: 1995586179}
@@ -1540,8 +1540,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 28.156}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 159}
-  m_SizeDelta: {x: 740.0549, y: 80.485}
+  m_AnchoredPosition: {x: 13, y: 156}
+  m_SizeDelta: {x: 669.2357, y: 178.4108}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2102017518
 MonoBehaviour:
@@ -1563,7 +1563,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: The last Fruits
+  m_text: 'The last Fruits
+
+    On the Plate!'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1590,8 +1592,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 90
-  m_fontSizeBase: 90
+  m_fontSize: 85
+  m_fontSizeBase: 85
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
