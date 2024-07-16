@@ -11,13 +11,18 @@ public class GoldenWatermelon : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private float startForce = 15f;
 
+    public bool isSliced = false;
+
     private void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         rb = GetComponent<Rigidbody2D>();
         rb.AddForce(transform.up * startForce, ForceMode2D.Impulse);
+
+        isSliced = false;
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag(PLAYER_TAG))
@@ -27,6 +32,7 @@ public class GoldenWatermelon : MonoBehaviour
 
             GameObject slicedFruits = Instantiate(GoldenSlicedWatermelonPrefab, transform.position, rotation);
 
+            isSliced = true;
             gameManager.AddScore(goldenWatermelon);
 
             Destroy(slicedFruits, 3f);

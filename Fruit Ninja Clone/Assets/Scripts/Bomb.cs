@@ -7,6 +7,7 @@ public class Bomb : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private float startForce = 12f;
     public AudioSource explosionSound;
+    public bool bombActivated = false;
 
     private void Start()
     {
@@ -14,11 +15,13 @@ public class Bomb : MonoBehaviour
 
         rb = GetComponent<Rigidbody2D>();
         rb.AddForce(transform.up * startForce, ForceMode2D.Impulse);
+        bombActivated = false;
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Blade"))
         {
+            bombActivated = true;
             bombEffect.Play();
             explosionSound.Play();
 

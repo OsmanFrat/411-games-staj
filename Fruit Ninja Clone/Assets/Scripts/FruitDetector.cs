@@ -8,16 +8,21 @@ public class FruitDetector : MonoBehaviour
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("GoldenWatermelon"))
         {
-            Debug.Log("GoldenWatermelon detected!");
-            if (!gameManager.gameOver)
+            GoldenWatermelon goldenWatermelon = collision.gameObject.GetComponent<GoldenWatermelon>();
+            
+            if (goldenWatermelon != null && !goldenWatermelon.isSliced)
             {
-                gameManager.playerHealth--;
+                Debug.Log("GoldenWatermelon out of bounds!");
+                if (!gameManager.gameOver)
+                {
+                    gameManager.playerHealth--;
+                }
             }
-
         }
     }
 }

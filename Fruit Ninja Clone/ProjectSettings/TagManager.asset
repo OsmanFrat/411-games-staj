@@ -7,6 +7,7 @@ TagManager:
   - Blade
   - Watermelon
   - GoldenWatermelon
+  - FruitDetector
   layers:
   - Default
   - TransparentFX
