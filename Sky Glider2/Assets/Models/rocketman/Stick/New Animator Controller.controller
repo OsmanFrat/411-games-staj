@@ -33,7 +33,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PullAni
+  m_Name: New State 0
   m_Speed: 0.3
   m_CycleOffset: 0
   m_Transitions: []
@@ -191,7 +191,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ReleaseAni
+  m_Name: New State 1
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
