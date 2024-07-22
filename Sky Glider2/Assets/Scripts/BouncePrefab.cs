@@ -3,19 +3,37 @@ using DG.Tweening;
 
 public class BouncePrefab : MonoBehaviour
 {
-    bool isBouncing = false;
-    Vector3 originalScale;
-
+    [SerializeField] private Ground ground;
+    private bool isBouncing = false;
+    private Vector3 originalScale;
+    public float yForce = 20f;
+    public float zforce = 20f;
+ 
+    public bool doubleForce = false;
     void Start()
     {
-        Destroy(gameObject, 4f);
+        ground = GameObject.Find("Ground").GetComponent<Ground>();
+        //Destroy(gameObject, 4f);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Bounce();
+            if (!ground.playerDead)
+            {
+                Bounce();
+
+                Rigidbody rb = collision.gameObject.GetComponent<Rigidbody>();
+                if (doubleForce)
+                {
+                    rb.AddForce(0f, yForce * 2, zforce * 2, ForceMode.Impulse);
+                }
+                else
+                {
+                    rb.AddForce(0f, yForce, zforce, ForceMode.Impulse);
+                }
+            }
         }
     }
 

@@ -5,10 +5,9 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private Ground ground;
 
-
     private void Update()
     {
-        if (ground.playerDead)
+        if (Input.GetKeyDown(KeyCode.R))
         {
             RestartGame();
         }
