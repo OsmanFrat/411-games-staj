@@ -1,53 +1,81 @@
 using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class Spawner : MonoBehaviour
 {
-    public GameObject[] prefabs;
+    public GameObject prefab1;
+    public GameObject prefab2;
     public GameObject player;
-    public float spawnDistance = 20.0f;
-    public float spawnInterval = 5.0f;
-    public float sideOffset = 3.0f;
-    public float groundY = 0.5f;
-    public float destroyTime = 2.0f;
 
-    private float nextSpawnZ;
+    [SerializeField] private LaunchController launchController;
+
+    public float width = 800f;   // Width of the rectangle (along the x-axis)
+    public float height = 1000f; // Height of the rectangle (along the z-axis)
+    public int numberOfObjects = 100;
+
+    private float objectWidth = 30f;
+    private float objectDepth = 30f;
+    private int rows;
+    private int columns;
+
+    private List<Vector3> gridPositions = new List<Vector3>();
+
+    public Vector3 offset = new Vector3(0, 0, 500f);
+
 
     void Start()
     {
-        nextSpawnZ = player.transform.position.z + spawnDistance;
+        CreateGrid();
+        SpawnObjects();
+        
+        launchController = GameObject.Find("Stick").GetComponent<LaunchController>();
     }
 
-    void Update()
+    private void Update()
     {
-        if (player.transform.position.z > nextSpawnZ - spawnDistance)
+        if (launchController.playerThrown)
         {
-            SpawnCubes();
-            nextSpawnZ += spawnInterval;
+            Vector3 newPosition = transform.position;
+            newPosition.z = player.transform.position.z + offset.z;
+            transform.position = newPosition;
         }
-    }
 
-    void SpawnCubes()
+    }   
+    public void CreateGrid()
     {
+        rows = Mathf.FloorToInt(width / (objectWidth + 10f));
+        columns = Mathf.FloorToInt(height / (objectDepth + 10f));
 
-        int randomPrefabIndex = Random.Range(0, prefabs.Length);
-        GameObject selectedPrefab = prefabs[randomPrefabIndex];
+        float spawnerZ = transform.position.z;
+        Vector3 rectangleMin = transform.position - new Vector3(width / 2, 0f, height / 2);
+        Vector3 startPosition = new Vector3(rectangleMin.x + objectWidth / 2, 0f, spawnerZ - height / 2 + objectDepth / 2);
 
-
-        int randomPosition = Random.Range(0, 3); // 0 = orta, 1 = sað, 2 = sol
-
-        Vector3 spawnPosition = new Vector3(player.transform.position.x, groundY, nextSpawnZ);
-
-        if (randomPosition == 1)
+        for (int x = 0; x < rows; x++)
         {
-            spawnPosition += player.transform.right * sideOffset;
+            for (int z = 0; z < columns; z++)
+            {
+                Vector3 gridPosition = startPosition + new Vector3(x * (objectWidth + 10f), 0f, z * (objectDepth + 10f));
+                gridPositions.Add(gridPosition);
+            }
         }
-        else if (randomPosition == 2)
-        {
-            spawnPosition -= player.transform.right * sideOffset;
-        }
-
-        GameObject spawnedObject = Instantiate(selectedPrefab, spawnPosition, Quaternion.identity);
-        Destroy(spawnedObject, destroyTime);
     }
-}
+
+    public void SpawnObjects()
+    {
+        for (int i = 0; i < numberOfObjects; i++)
+        {
+            if (gridPositions.Count == 0)
+                break;
+
+            int randomIndex = Random.Range(0, gridPositions.Count);
+            Vector3 spawnPosition = gridPositions[randomIndex];
+            gridPositions.RemoveAt(randomIndex);
+
+            float y = Random.Range(0f, 10f);  // Randomize y position between 0 and 10
+            spawnPosition.y = y;
+
+            GameObject prefabToSpawn = Random.value > 0.5f ? prefab1 : prefab2;
+            Instantiate(prefabToSpawn, spawnPosition, Quaternion.identity);
+        }
+    }
+}    
