@@ -5,6 +5,7 @@ using UnityEngine;
 public class SpawnerDetector : MonoBehaviour
 {
     [SerializeField] private Spawner spawner;
+    public GameObject ground;
 
     private void Start()
     {
@@ -21,6 +22,8 @@ public class SpawnerDetector : MonoBehaviour
             spawner.SpawnObjects();
 
             transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1000f);
+
+            ground.transform.position = new Vector3(ground.transform.position.x, ground.transform.position.y, ground.transform.position.z + 500f);
         }
     }
 

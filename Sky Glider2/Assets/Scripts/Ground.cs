@@ -8,7 +8,7 @@ public class Ground : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             playerDead = true;
-            collision.gameObject.GetComponent<RocketManController>().enabled = false;
+            //collision.gameObject.GetComponent<RocketManController>().enabled = false;
         }
     }
 }

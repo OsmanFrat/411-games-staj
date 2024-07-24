@@ -5,6 +5,9 @@ using DG.Tweening;
 public class RocketManController : MonoBehaviour
 {
     public Animator animator;
+    public TrailRenderer leftWingTrail;
+    public TrailRenderer rightWingTrail;
+
     private bool isPulling = false;
     private float startTime;
     private float holdTime;
@@ -19,6 +22,7 @@ public class RocketManController : MonoBehaviour
     public float movementForce = 0.3f;
 
     [SerializeField] private Rigidbody rb;
+    [SerializeField] private Ground ground;
 
     private Vector3 normalGravity = new Vector3(0, -9.81f, 0);
     public Vector3 slowGravity = new Vector3(0, 0, 0);
@@ -27,80 +31,95 @@ public class RocketManController : MonoBehaviour
     {
         rb = gameObject.GetComponent<Rigidbody>();
         lastMouseX = Input.mousePosition.x;
+        
+        leftWingTrail.enabled = false;
+        rightWingTrail.enabled = false;
     }
 
     void Update()
     {
-
-        if (Input.GetMouseButtonDown(0))
+        if (!ground.playerDead)
         {
-
-            isPulling = true;
-            startTime = Time.time;
-            animator.SetBool("pull", isPulling);
-            lastMouseX = Input.mousePosition.x;
-        }
-
-        if (hasLaunched)
-        {
-            if (Input.GetMouseButton(0) && isPulling)
+            if (Input.GetMouseButtonDown(0))
             {
-                StopRotation();
-                holdTime = Time.time - startTime;
-                normalizedOpenTime = Mathf.Clamp01(holdTime / maxHoldTime);
-                animator.Play("openWings", 0, normalizedOpenTime);
-                Physics.gravity = slowGravity;
 
-                float mouseX = Input.mousePosition.x;
-                float deltaX = mouseX - lastMouseX;
-                if (Mathf.Abs(deltaX) > 0.1f)
-                {
-                    float targetZRotation = 0;
-                    float targetYRotation = 0;
-                    Vector3 forceDirection = Vector3.zero;
-                    if (deltaX > 0)
-                    {
-                        // Sağa dönme
-                        targetYRotation = -30;
-                        targetZRotation = -45;
-                        forceDirection = Vector3.right;
-                    }
-                    else
-                    {
-                        // Sola dönme
-                        targetYRotation = 30;
-                        targetZRotation = 45;
-                        forceDirection = Vector3.left;
-                    }
+                isPulling = true;
+                startTime = Time.time;
+                animator.SetBool("pull", isPulling);
+                lastMouseX = Input.mousePosition.x;
+            }
 
-                    rb.transform.DORotate(new Vector3(35, targetYRotation, targetZRotation), 1f, RotateMode.Fast);
-                    rb.AddForce(forceDirection * movementForce, ForceMode.Impulse);
-                    lastMouseX = mouseX;
-                }
-
-                if (!openWingsOnce)
+            if (hasLaunched)
+            {
+                if (Input.GetMouseButton(0) && isPulling)
                 {
                     StopRotation();
-                    openWingsOnce = true;
+                    holdTime = Time.time - startTime;
+                    normalizedOpenTime = Mathf.Clamp01(holdTime / maxHoldTime);
+                    animator.Play("openWings", 0, normalizedOpenTime);
+                    
+                    leftWingTrail.enabled = true;
+                    rightWingTrail.enabled = true;
+
+                    Physics.gravity = slowGravity;
+
+                    float mouseX = Input.mousePosition.x;
+                    float deltaX = mouseX - lastMouseX;
+                    if (Mathf.Abs(deltaX) > 0.1f)
+                    {
+                        float targetZRotation = 0;
+                        float targetYRotation = 0;
+                        Vector3 forceDirection = Vector3.zero;
+                        if (deltaX > 0)
+                        {
+                            // Sağa dönme
+                            targetYRotation = -30;
+                            targetZRotation = -45;
+                            forceDirection = Vector3.right;
+                        }
+                        else
+                        {
+                            // Sola dönme
+                            targetYRotation = 30;
+                            targetZRotation = 45;
+                            forceDirection = Vector3.left;
+                        }
+
+                        rb.transform.DORotate(new Vector3(35, targetYRotation, targetZRotation), 1f, RotateMode.Fast);
+                        rb.AddForce(forceDirection * movementForce, ForceMode.Impulse);
+                        lastMouseX = mouseX;
+                    }
+
+                    if (!openWingsOnce)
+                    {
+                        StopRotation();
+                        openWingsOnce = true;
+                    }
                 }
-            }
 
-            if (Input.GetMouseButtonUp(0) && isPulling)
-            {
-                isPulling = false;
-                animator.SetBool("pull", isPulling);
-                holdTime = Time.time - startTime;
-                normalizedCloseTime = Mathf.Clamp01(holdTime / maxHoldTime);
-                animator.Play("closeWings", 0, 1 - normalizedCloseTime);
-                Physics.gravity = normalGravity;
-
-                if (openWingsOnce)
+                if (Input.GetMouseButtonUp(0) && isPulling)
                 {
-                    StartRotation();
-                    openWingsOnce = false;
+                    isPulling = false;
+                    animator.SetBool("pull", isPulling);
+                    holdTime = Time.time - startTime;
+                    normalizedCloseTime = Mathf.Clamp01(holdTime / maxHoldTime);
+                    animator.Play("closeWings", 0, 1 - normalizedCloseTime);
+
+                    leftWingTrail.enabled = false;
+                    rightWingTrail.enabled = false;
+
+                    Physics.gravity = normalGravity;
+
+                    if (openWingsOnce)
+                    {
+                        StartRotation();
+                        openWingsOnce = false;
+                    }
                 }
             }
         }
+
+
     }
 
 
@@ -127,4 +146,3 @@ public class RocketManController : MonoBehaviour
         rotateTween = transform.DORotate(new Vector3(35, 0, 0), 0.2f, RotateMode.Fast);
     }
 }
-

@@ -6,6 +6,7 @@ public class Spawner : MonoBehaviour
     public GameObject prefab1;
     public GameObject prefab2;
     public GameObject player;
+    public GameObject ground;
 
     [SerializeField] private LaunchController launchController;
 
@@ -22,13 +23,17 @@ public class Spawner : MonoBehaviour
 
     public Vector3 offset = new Vector3(0, 0, 500f);
 
+    public float checkInterval = 1000f;
+    private float nextCheckPosition = 0f;
 
     void Start()
     {
         CreateGrid();
         SpawnObjects();
-        
+
         launchController = GameObject.Find("Stick").GetComponent<LaunchController>();
+
+        nextCheckPosition = Mathf.Floor(transform.position.z / checkInterval) * checkInterval + checkInterval;
     }
 
     private void Update()
@@ -38,9 +43,21 @@ public class Spawner : MonoBehaviour
             Vector3 newPosition = transform.position;
             newPosition.z = player.transform.position.z + offset.z;
             transform.position = newPosition;
-        }
 
-    }   
+            if (transform.position.z >= nextCheckPosition && Mathf.Floor(transform.position.z / checkInterval) * checkInterval != 2000f)
+            {
+                Debug.Log(transform.position.z + " Spawned!");
+
+                CreateGrid();
+                SpawnObjects();
+
+                ground.transform.position = new Vector3(ground.transform.position.x, ground.transform.position.y, ground.transform.position.z + 500f);
+
+                nextCheckPosition += checkInterval;
+            }
+        }
+    }
+
     public void CreateGrid()
     {
         rows = Mathf.FloorToInt(width / (objectWidth + 10f));
@@ -78,4 +95,4 @@ public class Spawner : MonoBehaviour
             Instantiate(prefabToSpawn, spawnPosition, Quaternion.identity);
         }
     }
-}    
+}
