@@ -12,6 +12,10 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI currentScore;
     public TextMeshProUGUI highestScore;
     public GameObject gameOverPanel;
+    public AudioSource mainBg;
+    public AudioSource gameOverSoundEffect;
+
+    private bool gameOverSoundPlayed = false;
 
     private float currentHighestZ;
     private float highScore;
@@ -24,12 +28,24 @@ public class GameManager : MonoBehaviour
 
         highScore = PlayerPrefs.GetFloat("HighScore", 0f);
         highestScore.text = "High Score: " + highScore.ToString("0");
+
     }
 
     private void Update()
     {
         if (ground.playerDead)
         {
+            mainBg.loop = false;
+            mainBg.Stop();
+
+            if (!gameOverSoundPlayed) 
+            {
+                gameOverSoundEffect.Play();
+                gameOverSoundPlayed = true; 
+            }
+
+            gameOverPanel.SetActive(true);
+
             gameOverPanel.SetActive(true);
             Time.timeScale = 0f;
         }

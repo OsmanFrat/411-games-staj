@@ -5,6 +5,7 @@ using DG.Tweening;
 public class RocketManController : MonoBehaviour
 {
     public Animator animator;
+    
     public TrailRenderer leftWingTrail;
     public TrailRenderer rightWingTrail;
 
@@ -23,9 +24,12 @@ public class RocketManController : MonoBehaviour
 
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Ground ground;
+    public Transform armature;
 
-    private Vector3 normalGravity = new Vector3(0, -9.81f, 0);
-    public Vector3 slowGravity = new Vector3(0, 0, 0);
+    private Vector3 normalGravity = new Vector3(0, -12f, 0);
+    public Vector3 slowGravity = new Vector3(0, 0f, 0);
+
+    private Tweener yawTween;
 
     private void Start()
     {
@@ -34,6 +38,9 @@ public class RocketManController : MonoBehaviour
         
         leftWingTrail.enabled = false;
         rightWingTrail.enabled = false;
+
+        yawTween = armature.DOLocalRotate(Vector3.zero, 0.2f, RotateMode.Fast).SetAutoKill(false);
+        yawTween.Pause();
     }
 
     void Update()
@@ -85,7 +92,10 @@ public class RocketManController : MonoBehaviour
                             forceDirection = Vector3.left;
                         }
 
-                        rb.transform.DORotate(new Vector3(35, targetYRotation, targetZRotation), 1f, RotateMode.Fast);
+                        //rb.transform.DORotate(new Vector3(35, targetYRotation, targetZRotation), 1f, RotateMode.Fast);
+                        //armature.transform.DORotate(new Vector3(35, targetYRotation, targetZRotation), 1f, RotateMode.Fast);
+                        yawTween.ChangeEndValue(new Vector3(35, targetYRotation, targetZRotation), true).Restart();
+
                         rb.AddForce(forceDirection * movementForce, ForceMode.Impulse);
                         lastMouseX = mouseX;
                     }
@@ -134,7 +144,10 @@ public class RocketManController : MonoBehaviour
             {
                 rotateTween.Pause();
             }
-            rotateTween = rb.gameObject.transform.DORotate(new Vector3(360, 0, 0), 0.6f, RotateMode.FastBeyond360)
+            //armature.DORotate(Vector3.zero, 0.2f);
+            yawTween.ChangeEndValue(Vector3.zero, true).Restart();
+
+            rotateTween = rb.gameObject.transform.DORotate(new Vector3(360, 0, 0) , 0.6f, RotateMode.FastBeyond360)
                 .SetEase(Ease.Linear)
                 .SetLoops(-1, LoopType.Incremental).SetRelative();
         }
@@ -144,5 +157,6 @@ public class RocketManController : MonoBehaviour
     {
         rotateTween.Pause();
         rotateTween = transform.DORotate(new Vector3(35, 0, 0), 0.2f, RotateMode.Fast);
+        yawTween.ChangeEndValue(Vector3.zero, true).Restart();
     }
 }

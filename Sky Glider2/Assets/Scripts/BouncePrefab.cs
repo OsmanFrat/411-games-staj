@@ -10,30 +10,55 @@ public class BouncePrefab : MonoBehaviour
     public float zforce = 20f;
  
     public bool doubleForce = false;
+
+    public AudioSource bounceSoundEffect;
+    public ParticleSystem particleObject;
+    public GameObject player;
     void Start()
     {
         ground = GameObject.Find("Ground").GetComponent<Ground>();
-        //Destroy(gameObject, 4f);
+        player = GameObject.Find("Player");
+        particleObject = GameObject.Find("BounceEffect").GetComponent<ParticleSystem>();
+        bounceSoundEffect = GetComponentInChildren<AudioSource>();
+
+        //Destroy(gameObject, 15f);
     }
 
+    private void Update()
+    {
+        if ((player.transform.position.z - transform.position.z) >= 1500f)
+        {
+            Destroy(gameObject);
+        }
+    }
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
             if (!ground.playerDead)
             {
-                Bounce();
+                //Bounce();
 
                 Rigidbody rb = collision.gameObject.GetComponent<Rigidbody>();
+                rb.angularVelocity = Vector3.zero;
+                
                 if (doubleForce)
                 {
+                    particleObject.Play();
+                    bounceSoundEffect.Play();
+
                     rb.AddForce(0f, yForce * 2, zforce * 2, ForceMode.Impulse);
                 }
                 else
                 {
+                    particleObject.Play();
+                    bounceSoundEffect.Play();
+
                     rb.AddForce(0f, yForce, zforce, ForceMode.Impulse);
                 }
             }
+
+            
         }
     }
 
