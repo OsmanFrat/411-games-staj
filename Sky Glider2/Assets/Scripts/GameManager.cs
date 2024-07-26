@@ -8,10 +8,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] private LaunchController launchController;
 
     public GameObject player;
+
     public TextMeshProUGUI score;
     public TextMeshProUGUI currentScore;
     public TextMeshProUGUI highestScore;
+    public TextMeshProUGUI fpsCounter;
+
     public GameObject gameOverPanel;
+
     public AudioSource mainBg;
     public AudioSource gameOverSoundEffect;
 
@@ -19,6 +23,14 @@ public class GameManager : MonoBehaviour
 
     private float currentHighestZ;
     private float highScore;
+
+    private int lastFrameIndex;
+    private float[] frameDeltaTimeArray;
+
+    private void Awake()
+    {
+        frameDeltaTimeArray = new float[50];
+    }
 
     private void Start()
     {
@@ -28,23 +40,22 @@ public class GameManager : MonoBehaviour
 
         highScore = PlayerPrefs.GetFloat("HighScore", 0f);
         highestScore.text = "High Score: " + highScore.ToString("0");
-
     }
 
     private void Update()
     {
+        SetFps();
+
         if (ground.playerDead)
         {
             mainBg.loop = false;
             mainBg.Stop();
 
-            if (!gameOverSoundPlayed) 
+            if (!gameOverSoundPlayed)
             {
                 gameOverSoundEffect.Play();
-                gameOverSoundPlayed = true; 
+                gameOverSoundPlayed = true;
             }
-
-            gameOverPanel.SetActive(true);
 
             gameOverPanel.SetActive(true);
             Time.timeScale = 0f;
@@ -78,5 +89,29 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         ground.playerDead = false;
+    }
+
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
+
+    private void SetFps()
+    {
+        frameDeltaTimeArray[lastFrameIndex] = Time.unscaledDeltaTime;
+        lastFrameIndex = (lastFrameIndex + 1) % frameDeltaTimeArray.Length;
+
+        fpsCounter.text = Mathf.RoundToInt(CalculateFps()).ToString();
+    }
+
+    private float CalculateFps()
+    {
+        float total = 0f;
+        foreach (float deltaTime in frameDeltaTimeArray)
+        {
+            total += deltaTime;
+        }
+
+        return frameDeltaTimeArray.Length / total;
     }
 }

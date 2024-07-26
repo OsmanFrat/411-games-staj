@@ -5,6 +5,8 @@ using DG.Tweening;
 public class RocketManController : MonoBehaviour
 {
     public Animator animator;
+
+    //public AudioSource windSound;
     
     public TrailRenderer leftWingTrail;
     public TrailRenderer rightWingTrail;
@@ -64,7 +66,9 @@ public class RocketManController : MonoBehaviour
                     holdTime = Time.time - startTime;
                     normalizedOpenTime = Mathf.Clamp01(holdTime / maxHoldTime);
                     animator.Play("openWings", 0, normalizedOpenTime);
-                    
+
+                    //windSound.Play();
+
                     leftWingTrail.enabled = true;
                     rightWingTrail.enabled = true;
 
@@ -114,6 +118,8 @@ public class RocketManController : MonoBehaviour
                     holdTime = Time.time - startTime;
                     normalizedCloseTime = Mathf.Clamp01(holdTime / maxHoldTime);
                     animator.Play("closeWings", 0, 1 - normalizedCloseTime);
+
+                    //windSound.Pause();
 
                     leftWingTrail.enabled = false;
                     rightWingTrail.enabled = false;
